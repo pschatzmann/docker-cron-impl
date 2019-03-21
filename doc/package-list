@@ -1,0 +1,5 @@
+ch.pschatzmann.docker.jobs.api
+ch.pschatzmann.docker.jobs.executors
+ch.pschatzmann.docker.jobs.main
+ch.pschatzmann.docker.jobs.model
+ch.pschatzmann.docker.jobs.model.scripting

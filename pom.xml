@@ -1,0 +1,257 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ch.pschatzmann.docker</groupId>
+	<artifactId>docker-cron</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<aetherVersion>0.9.0.M2</aetherVersion>
+		<mavenVersion>3.1.0</mavenVersion>
+		<wagonVersion>1.0</wagonVersion>
+		<additionalparam>-Xdoclint:none</additionalparam>
+	</properties>
+
+
+
+	<build>
+		<sourceDirectory>src/main</sourceDirectory>
+		<testSourceDirectory>src/test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/resources</directory>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<target>1.8</target>
+					<source>1.8</source>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>ch.pschatzmann.docker.jobs.main.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>ch.pschatzmann.docker.jobs.main.Main</mainClass>
+						</manifest>
+					</archive>
+
+					<outputDirectory>docker</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>assemble-all</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.github.docker-java</groupId>
+			<artifactId>docker-java</artifactId>
+			<version>3.0.6</version>
+		</dependency>
+		<dependency>
+			<groupId>it.sauronsoftware.cron4j</groupId>
+			<artifactId>cron4j</artifactId>
+			<version>2.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.4.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-jexl</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>el-impl</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- COMMONS -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<!-- AETHER -->
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-api</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-util</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-impl</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-file</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-asynchttpclient</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.aether</groupId>
+			<artifactId>aether-connector-wagon</artifactId>
+			<version>${aetherVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.tesla.maven</groupId>
+			<artifactId>maven-aether-provider</artifactId>
+			<version>${mavenVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-ssh</artifactId>
+			<version>${wagonVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-file</artifactId>
+			<version>${wagonVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-http</artifactId>
+			<version>${wagonVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.wagon</groupId>
+			<artifactId>wagon-http-lightweight</artifactId>
+			<version>${wagonVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.sevenzipjbinding</groupId>
+			<artifactId>sevenzipjbinding</artifactId>
+			<version>9.20-2.00beta</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.sevenzipjbinding</groupId>
+			<artifactId>sevenzipjbinding-all-platforms</artifactId>
+			<version>9.20-2.00beta</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.undertow</groupId>
+			<artifactId>undertow-core</artifactId>
+			<version>1.4.12.Final</version>
+		</dependency>
+
+
+
+	</dependencies>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.19.1</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<outputDirectory>target/site</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<distributionManagement>
+		<repository>
+			<id>release</id>
+			<url>http://nuc.local:8081/repository/maven-releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<url>http://nuc.local:8081/repository/maven-snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+</project>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Docker CRON</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<link rel='stylesheet' href='fullcalendar/fullcalendar.min.css' />
+<link rel='stylesheet' href='lib/jquery.qtip.min.css' />
+<link rel='stylesheet' href='calendar.css' />
+</head>
+<body>
+	<script src='lib/jquery.min.js'></script>
+	<script src='lib/jquery.qtip.min.js'></script>
+	<script src='lib/moment.min.js'></script>
+	<script src='fullcalendar/fullcalendar.js'></script>
+
+	<script>
+		$(document).ready(function() {
+			// page is now ready, initialize the calendar...
+			$('#calendar').fullCalendar({
+				// put your options and callbacks here
+				header : {
+					left : 'today prev,next',
+					center : 'title',
+					right : 'agendaDay,agendaWeek,month'
+				},
+
+				firstDay : 1,
+				slotLabelFormat : 'HH:mm',
+				defaultView : 'agendaWeek',
+				themeSystem : 'bootstrap3',
+				navLinks : true,
+				agendaEventMinHeight : 5,
+				slotDuration : '00:15:00',
+				defaultTimedEventDuration : '00:15:00',
+				displayEventTime : false,
+				timeFormat : 'HH:mm',
+				slotEventOverlap : false,
+				eventSources : [ {
+					url : '/events',
+					textColor : 'black',
+					editable : false
+				} ],
+				eventClick : function(calEvent, jsEvent, view) {
+					window.open("/logs.html?container=" + calEvent.id);
+					return false;
+				},
+				eventRender : function(event, element) {
+					element.qtip({
+						content : { 
+							text: event.tooltip
+						},
+						style: {
+							classes: 'qtip-dark'
+					    },
+					    position: {
+					        target: 'mouse',
+					        adjust: {
+					            x: 10,
+					            y: 10,
+
+					           mouse: true  // Can be omitted (e.g. default behaviour)
+					        }
+					     }
+					});
+				}
+
+			})
+		});
+	</script>
+
+
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 class='docker-cron-title'>Docker CRON Scheduling
+					Information</h1>
+			</div>
+		</div>
+	</nav>
+
+	<div id='calendar' class='container docker-cron-calendar'></div>
+
+</body>
+</html>

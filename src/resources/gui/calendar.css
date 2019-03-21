@@ -1,0 +1,16 @@
+.docker-cron-title {
+	font-size: 18pt;
+	color: WhiteSmoke;
+}
+
+.docker-cron-calendar {
+	margin-top: 2.5cm;
+	margin-left: 1cm;
+	margin-right: 1cm;
+	margin-bottom: 2cm;
+}
+
+.docker-cron-logs {
+	margin-top: 2.5cm;
+}
+

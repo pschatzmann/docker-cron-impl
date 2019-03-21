@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Docker CRON</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+<link rel='stylesheet' href='calendar.css' />
+
+<link type="text/css" rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+<script src='lib/jquery.min.js'></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+
+
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<h1 id='title' class='docker-cron-title'></h1>
+			</div>
+		</div>
+	</nav>
+
+	<div id="jsGrid" class="container docker-cron-logs"></div>
+
+</body>
+
+<script>
+	$.extend({
+		getUrlVars : function() {
+			var vars = [], hash;
+			var hashes = window.location.href.slice(
+					window.location.href.indexOf('?') + 1).split('&');
+			for (var i = 0; i < hashes.length; i++) {
+				hash = hashes[i].split('=');
+				vars.push(hash[0]);
+				vars[hash[0]] = hash[1];
+			}
+			return vars;
+		},
+		getUrlVar : function(name) {
+			return $.getUrlVars()[name];
+		}
+	});
+	
+	$("#jsGrid").jsGrid({
+		width : "99%",
+		height : "auto",
+
+		inserting : false,
+		editing : false,
+		sorting : true,
+		filtering: false,
+		paging : true,
+
+		autoload : true,
+		pageSize : 1000,
+		pageButtonCount : 5,
+		pageIndex : 1,
+
+		controller : {
+			loadData : function(filter) {
+				var par = location.href.split('?')[1];
+				return $.ajax({
+					url : "/logs?" + par,
+					dataType : "json", 
+					error: function (xhr, ajaxOptions, thrownError) {
+				        alert(thrownError);
+				      }
+				});
+			}
+		},
+		fields : [ {
+			name : "line",
+			type: "number",
+			title: "Line",
+			width: "4%"
+		}, {
+			name : "date",
+			title: "Date",
+			width: "13%"
+
+		}, {
+			name : "message",
+			title: "Message",
+			width: "83%"
+		} ]
+	});
+
+	$(document).ready(function() {
+		$('#title').text("Log for '"+$.getUrlVar('container')+"'");
+
+	});
+</script>
+
+</html>
